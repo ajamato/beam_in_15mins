@@ -8,6 +8,11 @@ import step_3
 import step_4
 
 class KeyByCountryCodeFn(beam.DoFn):
+  """A DoFn which accepts sales records and outputs key value tuples
+  
+  The output records are tuples containing the country code as a key
+  and the original record as the value.
+  """
   def process(self, element):
     return [(element[1], element)]
 
@@ -16,7 +21,8 @@ if __name__ == "__main__":
   result = (p
   | 'add names' >> beam.io.ReadFromText('./data/sample_sales_records.csv')
   | 'parse csv ' >> beam.ParDo(step_3.ParseCsvRow())
-  | 'run function in parallel ' >> beam.ParDo(step_4.NormalizeAndFilterRecordsFn())
+  | 'run function in parallel ' >> beam.ParDo(
+      step_4.NormalizeAndFilterRecordsFn())
   | 'key by country code' >> beam.ParDo(KeyByCountryCodeFn())
       .with_output_types(typehints.KV[str, typehints.List[str]])
   | 'count records' >> beam.combiners.Count.PerKey()

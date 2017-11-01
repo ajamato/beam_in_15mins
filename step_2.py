@@ -5,6 +5,11 @@ import csv
 import step_1
 
 class NormalizeCountryCodeFn(beam.DoFn):
+  """A DoFn which normalizes the country code on sales records.
+  
+  When this is invoked in a beam pipeline it will normalize many
+  sales record elements at the same time. That is, in parallel.
+  """
   def process(self, element):
     return [step_1.normalize_country_code(element)]
 

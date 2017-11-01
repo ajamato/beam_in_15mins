@@ -6,8 +6,14 @@ import step_1
 import step_2
 import step_3
 
-# Step 4
 class NormalizeAndFilterRecordsFn(beam.DoFn):
+  """A DoFn which normalizes and filters sales record elements.
+  
+  Normalizes country codes so that they are consistent across records.
+     e.g. 'United States', 'USA', and 'United States of America' are
+     all normalized to 'USA'
+  Filters out the sales records with missing product ids.
+  """
   def process(self, element):
     element = step_1.normalize_country_code(element)
     if element[2]:

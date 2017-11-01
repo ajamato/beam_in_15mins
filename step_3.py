@@ -6,8 +6,8 @@ import step_1
 import step_2
 
 class ParseCsvRow(beam.DoFn):
+  """A DoFn that converts a string line from a CSV file into an array."""
   def process(self, element):
-    # TODO add comments
     return [element.split(",")]
 
 if __name__ == "__main__":
