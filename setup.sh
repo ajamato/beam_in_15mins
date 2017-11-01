@@ -9,10 +9,8 @@ pip --version
 # Need to know which OS and which tool to try.
 
 # Install tools
-echo "START installing"
 pip install --upgrade virtualenv
 pip install --upgrade setuptools
-echo "DONE installing"
 
 # TODO user --user? OSX has this issue installing.
 # see https://github.com/ipython/ipython/issues/9523
@@ -23,9 +21,6 @@ DIR="$HOME/beam_in_15_virt$DATETIME"
 mkdir "$DIR"
 echo "Creating virtualenv $DIR"
 virtualenv "$DIR"
-echo "Please run\n:"
+echo "Please activate a virtual environment by running\n:"
 echo ". $DIR/bin/activate"
-
-# TODO Can we get this to autmatically work? Doesn't seem to stay in virtual env
-. "$DIR/bin/activate"
 
