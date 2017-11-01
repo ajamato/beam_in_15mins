@@ -16,7 +16,7 @@ def normalize_country_code(element):
     "CANADA" : "CDN",
     "CDN" : "CDN",
     "UNITED STATES" : "USA",
-    "USA" : "CDN",
+    "USA" : "USA",
     "UNITED STATES OF AMERICA" : "USA",
     "MEXICO": "MX",
     "MX": "MX"
@@ -129,22 +129,13 @@ class KeyByCountryCodeFn(beam.DoFn):
 
 
 p = beam.Pipeline('DirectRunner')
-"""
 result = (p
 | 'add names' >> beam.io.ReadFromText('./data/sample_sales_records.csv')
 | 'parse csv ' >> beam.ParDo(ParseCsvRow())
 | 'run function in parallel ' >> beam.ParDo(NormalizeAndFilterRecordsFn())
 | 'key by country code' >> beam.ParDo(KeyByCountryCodeFn())
-    .with_output_types(typehints.KV[str, typehints.List[str]]))
-"""
-
-result = (p 
-| 'add sales records' >> beam.Create(RECORDS)
-    .with_output_types(typehints.List[str])
-| 'key by country code' >> beam.ParDo(KeyByCountryCodeFn())
     .with_output_types(typehints.KV[str, typehints.List[str]])
-| 'group records' >> beam.GroupByKey()
-| 'count records' >> beam.combiners.Count.PerElement())
+| 'count records' >> beam.combiners.Count.PerKey())
 
 debug.print_pcoll(result)
 p.run()
