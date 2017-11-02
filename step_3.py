@@ -15,9 +15,10 @@ if __name__ == "__main__":
   result = (p
   | 'add names' >> beam.io.ReadFromText('./data/sample_sales_records.csv')
   | 'parse csv ' >> beam.ParDo(ParseCsvRow())
-  | 'run function in parallel ' >> beam.ParDo(step_2.NormalizeCountryCodeFn())
-  | 'write to file' >> beam.io.WriteToText('output/results')
-  )
+      .with_output_types(typehints.List[str])
+  | 'run function in parallel ' >> beam.ParDo(step_2.NormalizeCountryCodeFn()))
+
+  result | 'write to file' >> beam.io.WriteToText('output/results')
   debug.print_pcoll(result)
   p.run()
   print "You can also find this output in output/results*"

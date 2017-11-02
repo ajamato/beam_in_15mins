@@ -27,9 +27,9 @@ if __name__ == "__main__":
   result = (p
   | 'add names' >> beam.io.ReadFromText('./data/sample_sales_records.csv')
   | 'parse csv ' >> beam.ParDo(step_3.ParseCsvRow())
-  | 'run function in parallel ' >> beam.ParDo(NormalizeAndFilterRecordsFn())
-  | 'write to file' >> beam.io.WriteToText('output/results')
-  )
+  | 'run function in parallel ' >> beam.ParDo(NormalizeAndFilterRecordsFn()))
+
+  result | 'write to file' >> beam.io.WriteToText('output/results')
   debug.print_pcoll(result)
   p.run()
   print "You can also find this output in output/results*"

@@ -23,6 +23,7 @@ if __name__ == "__main__":
   p = beam.Pipeline('DirectRunner')
   result = (p
   | 'add sales records' >> beam.Create(RECORDS)
+          .with_output_types(typehints.List[str])
   | 'run function in parallel' >> beam.ParDo(NormalizeCountryCodeFn()))
 
   debug.print_pcoll(result)

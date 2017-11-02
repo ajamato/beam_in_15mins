@@ -25,9 +25,9 @@ if __name__ == "__main__":
       step_4.NormalizeAndFilterRecordsFn())
   | 'key by country code' >> beam.ParDo(KeyByCountryCodeFn())
       .with_output_types(typehints.KV[str, typehints.List[str]])
-  | 'count records' >> beam.combiners.Count.PerKey()
-  | 'write to file' >> beam.io.WriteToText('output/results'))
+  | 'count records' >> beam.combiners.Count.PerKey())
 
+  result | 'write to file' >> beam.io.WriteToText('output/results')
   debug.print_pcoll(result)
   p.run()
   print "You can also find this output in output/results*"
